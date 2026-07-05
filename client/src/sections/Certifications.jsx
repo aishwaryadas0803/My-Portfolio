@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { Award, BadgeCheck, Medal, ShieldCheck, Cpu, Smartphone } from 'lucide-react';
+import React, { useState } from 'react';
+import { Award, BadgeCheck, Medal, ShieldCheck, Cpu, Smartphone, X } from 'lucide-react';
 
 const certifications = [
   {
@@ -14,7 +14,8 @@ const certifications = [
     borderColor: "border-yellow-400/30 hover:border-yellow-400/60",
     iconColor: "text-yellow-400",
     badgeColor: "bg-yellow-400/10 text-yellow-400 border-yellow-400/20",
-    isGold: true
+    isGold: true,
+    image: "/certificates/java.jpg"
   },
   {
     name: "Principles of Management",
@@ -26,7 +27,8 @@ const certifications = [
     borderColor: "border-girly-lavender/15 hover:border-girly-lavender/40",
     iconColor: "text-girly-lavender",
     badgeColor: "bg-girly-lavender/10 text-girly-lavender border-girly-lavender/20",
-    isGold: false
+    isGold: false,
+    image: null
   },
   {
     name: "Full Stack Development Using MERN",
@@ -38,7 +40,8 @@ const certifications = [
     borderColor: "border-girly-pink/15 hover:border-girly-pink/40",
     iconColor: "text-girly-pink",
     badgeColor: "bg-girly-pink/10 text-girly-pink border-girly-pink/20",
-    isGold: false
+    isGold: false,
+    image: "/certificates/mern.jpg"
   },
   {
     name: "Python for AI & ML",
@@ -50,7 +53,8 @@ const certifications = [
     borderColor: "border-girly-lavender/15 hover:border-girly-lavender/40",
     iconColor: "text-girly-lavender",
     badgeColor: "bg-girly-lavender/10 text-girly-lavender border-girly-lavender/20",
-    isGold: false
+    isGold: false,
+    image: "/certificates/python.png"
   },
   {
     name: "Cyber Security Training",
@@ -62,7 +66,8 @@ const certifications = [
     borderColor: "border-girly-pink/15 hover:border-girly-pink/40",
     iconColor: "text-girly-pink",
     badgeColor: "bg-girly-pink/10 text-girly-pink border-girly-pink/20",
-    isGold: false
+    isGold: false,
+    image: "/certificates/cybersecurity.png"
   },
   {
     name: "Android App Development",
@@ -74,12 +79,13 @@ const certifications = [
     borderColor: "border-girly-lavender/15 hover:border-girly-lavender/40",
     iconColor: "text-girly-lavender",
     badgeColor: "bg-girly-lavender/10 text-girly-lavender border-girly-lavender/20",
-    isGold: false
+    isGold: false,
+    image: "/certificates/android.jpg"
   },
   {
     name: "Cloud Computing",
     provider: "NPTEL, IIT Kharagpur",
-    year: "2025",
+    year: "2026",
     highlight: "Elite Silver",
     icon: BadgeCheck,
     accentColor: "from-slate-400/20 to-girly-lavender/15",
@@ -87,11 +93,14 @@ const certifications = [
     iconColor: "text-slate-300",
     badgeColor: "bg-slate-400/10 text-slate-300 border-slate-400/20",
     isGold: false,
-    isSilver: true
+    isSilver: true,
+    image: null
   }
 ];
 
 const Certifications = () => {
+  const [selectedCert, setSelectedCert] = useState(null);
+
   return (
     <section id="certifications" className="py-24 px-6 relative">
       {/* Background ambient decoration */}
@@ -104,16 +113,21 @@ const Certifications = () => {
           <h2 className="text-xs font-semibold uppercase tracking-wider text-girly-lavender mb-3">Credentials</h2>
           <p className="text-3xl md:text-5xl font-bold text-offwhite tracking-tight">Certifications & Training</p>
           <div className="w-16 h-1 bg-gradient-to-r from-girly-pink to-girly-lavender mx-auto mt-4 rounded-full" />
+          <p className="text-xs text-offwhite/40 mt-3">(Click any card with a preview to view the certificate)</p>
         </div>
 
         {/* Certifications Grid */}
         <div className="flex flex-wrap justify-center gap-6">
           {certifications.map((cert, idx) => {
             const Icon = cert.icon;
+            const hasPreview = !!cert.image;
             return (
               <div
                 key={idx}
-                className={`group relative p-6 rounded-2xl bg-plum-muted/30 border ${cert.borderColor} glass-morphism transition-all duration-500 hover:shadow-pink-glow/30 overflow-hidden w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]`}
+                onClick={() => hasPreview && setSelectedCert(cert)}
+                className={`group relative p-6 rounded-2xl bg-plum-muted/30 border ${cert.borderColor} glass-morphism transition-all duration-500 hover:shadow-pink-glow/30 overflow-hidden w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] ${
+                  hasPreview ? 'cursor-pointer' : 'cursor-default'
+                }`}
               >
                 {/* Background gradient accent */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${cert.accentColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
@@ -134,9 +148,16 @@ const Certifications = () => {
                     <div className={`p-3 rounded-xl bg-darkBg-primary/60 ${cert.iconColor} transition-transform duration-300 group-hover:scale-110`}>
                       <Icon size={22} />
                     </div>
-                    <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${cert.badgeColor}`}>
-                      {cert.year}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      {hasPreview && (
+                        <span className="text-[9px] font-semibold text-girly-pink bg-girly-pink/10 border border-girly-pink/20 px-2 py-0.5 rounded-full opacity-60 group-hover:opacity-100 transition-opacity">
+                          View
+                        </span>
+                      )}
+                      <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${cert.badgeColor}`}>
+                        {cert.year}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Certificate Name */}
@@ -190,6 +211,42 @@ const Certifications = () => {
           </div>
         </div>
       </div>
+
+      {/* popup Modal */}
+      {selectedCert && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in"
+          onClick={() => setSelectedCert(null)}
+        >
+          <div 
+            className="relative max-w-4xl w-full max-h-[85vh] rounded-2xl border border-offwhite/10 bg-darkBg-secondary/90 shadow-2xl p-2 md:p-4 overflow-hidden flex flex-col items-center justify-center glass-morphism"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="w-full flex justify-between items-center px-4 py-2 border-b border-offwhite/5 mb-3">
+              <div>
+                <h4 className="text-sm md:text-base font-bold text-offwhite">{selectedCert.name}</h4>
+                <p className="text-[10px] md:text-xs text-offwhite/50">{selectedCert.provider} ({selectedCert.year})</p>
+              </div>
+              <button 
+                onClick={() => setSelectedCert(null)}
+                className="p-1 rounded-full hover:bg-white/10 text-offwhite/70 hover:text-offwhite transition-colors cursor-pointer focus:outline-none"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Image container */}
+            <div className="relative flex-grow w-full overflow-auto flex items-center justify-center bg-black/40 rounded-xl p-2 max-h-[70vh]">
+              <img 
+                src={selectedCert.image} 
+                alt={`${selectedCert.name} Certificate`} 
+                className="max-w-full max-h-[65vh] object-contain rounded-lg shadow-xl"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
