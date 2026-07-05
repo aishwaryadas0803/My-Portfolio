@@ -7,21 +7,21 @@ module.exports = {
     extend: {
       colors: {
         darkBg: {
-          primary: "#16121E",
-          secondary: "#251E33",
+          primary: "#0B0B0C",
+          secondary: "#1A1A1C",
         },
         plum: {
-          muted: "#251E33",
+          muted: "#1A1A1C",
         },
-        offwhite: "#EBE7F5",
+        offwhite: "#E3E3E6",
         girly: {
-          pink: "#E295B5",
-          lavender: "#B39DDB",
+          pink: "#E0A96D",
+          lavender: "#F2D492",
         },
       },
       boxShadow: {
-        "pink-glow": "0 0 20px 2px rgba(226, 149, 181, 0.3)",
-        "lavender-glow": "0 0 20px 2px rgba(179, 157, 219, 0.3)",
+        "pink-glow": "0 0 20px 2px rgba(224, 169, 109, 0.3)",
+        "lavender-glow": "0 0 20px 2px rgba(242, 212, 146, 0.3)",
         "premium-card": "0 8px 30px rgba(0, 0, 0, 0.5)",
       },
       animation: {

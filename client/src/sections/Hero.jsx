@@ -1,15 +1,20 @@
 'use client';
 
-import React from 'react';
-import { ArrowRight, Code2, Sparkles, Terminal } from 'lucide-react';
-import CustomButton from '../components/CustomButton';
+import React, { useState, useEffect } from 'react';
+import { Sparkles, Laptop, Brain, Puzzle, Lightbulb, GraduationCap, Compass, Target } from 'lucide-react';
 
 const Hero = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleScrollTo = (e, id) => {
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
-      const offset = 80;
+      const offset = 100;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -22,132 +27,244 @@ const Hero = () => {
     }
   };
 
+  // Background twinkling stars configuration
+  const sparkles = [
+    { top: '15%', left: '12%', size: 4, delay: '0s' },
+    { top: '22%', left: '85%', size: 5, delay: '1.5s' },
+    { top: '75%', left: '10%', size: 4, delay: '2.5s' },
+    { top: '80%', left: '50%', size: 5, delay: '0.8s' },
+    { top: '45%', left: '90%', size: 4, delay: '3.2s' },
+  ];
+
+  // Falling cherry blossom petals configuration
+  const petals = [
+    { left: '8%', size: 8, delay: '0s', duration: '14s' },
+    { left: '28%', size: 10, delay: '4s', duration: '16s' },
+    { left: '60%', size: 7, delay: '2s', duration: '12s' },
+    { left: '82%', size: 9, delay: '6s', duration: '19s' },
+  ];
+
   return (
     <section 
       id="hero" 
-      className="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-6 overflow-hidden bg-grid-pattern"
+      className={`relative min-h-screen w-full flex flex-col justify-between items-center pt-32 pb-8 px-6 overflow-hidden bg-[#16121E] transition-opacity duration-1000 ${
+        mounted ? 'opacity-100' : 'opacity-0'
+      }`}
     >
-      {/* Ambient background blur orbs */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-girly-pink/15 blur-[120px] animate-pulse-slow pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[450px] h-[450px] rounded-full bg-girly-lavender/15 blur-[120px] animate-pulse-slow pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      {/* Awwwards-style grain overlay covering the entire viewport */}
+      <div className="absolute inset-0 bg-grain pointer-events-none z-20" />
+
+      {/* Ambient color gradient backdrops */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[70vw] h-[50vh] rounded-full bg-gradient-to-tr from-girly-pink/10 to-girly-lavender/10 blur-[130px]" />
+        <div className="absolute top-[10%] left-[10%] w-[350px] h-[350px] rounded-full bg-girly-pink/5 blur-[120px] animate-pulse-slow" />
+        <div className="absolute bottom-[20%] right-[10%] w-[450px] h-[450px] rounded-full bg-girly-lavender/5 blur-[130px] animate-pulse-slow" />
+      </div>
+
+      {/* Atmospheric Twinkling Stars & Drifting Petals */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        {sparkles.map((star, idx) => (
+          <div 
+            key={idx}
+            className="absolute rounded-full bg-offwhite/60 animate-twinkle"
+            style={{
+              top: star.top,
+              left: star.left,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              animationDelay: star.delay,
+              boxShadow: '0 0 6px 1px rgba(235, 231, 245, 0.3)'
+            }}
+          />
+        ))}
+
+        {petals.map((petal, idx) => (
+          <div 
+            key={idx}
+            className="absolute rounded-full bg-girly-pink/15"
+            style={{
+              left: petal.left,
+              width: `${petal.size}px`,
+              height: `${petal.size}px`,
+              top: '-20px',
+              animation: `drift-sakura ${petal.duration} linear infinite`,
+              animationDelay: petal.delay,
+              filter: 'blur(0.5px)'
+            }}
+          />
+        ))}
+      </div>
+
+      {/* 
+        Background Layer: Huge Bold Text "AISHWARYA" 
+        Positioned behind the portrait to create depth (z-0)
+      */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 select-none">
+        <h1 className="text-[13vw] sm:text-[14vw] md:text-[15vw] xl:text-[16vw] font-black uppercase tracking-tighter leading-none bg-text-gradient opacity-[0.85] text-center w-full">
+          Aishwarya
+        </h1>
+      </div>
+
+      {/* 
+        Foreground Layer: Centered portrait illustration (z-10) 
+        and overlapping floating glassmorphism cards
+      */}
+      <div className="relative flex-grow flex items-center justify-center z-10 w-full max-w-2xl mt-8">
+        
+        {/* Soft aura glow behind illustration */}
+        <div className="absolute w-[85%] h-[85%] rounded-full bg-gradient-to-tr from-girly-pink/20 to-girly-lavender/25 blur-[65px] pointer-events-none" />
+
+        {/* The portrait box (Enlarged) */}
+        <div className="relative w-80 h-[380px] sm:w-[420px] sm:h-[500px] md:w-[480px] md:h-[580px] lg:w-[520px] lg:h-[630px] z-10">
+          <img 
+            src="/illustration.png" 
+            alt="Aishwarya Das" 
+            className="w-full h-full object-contain mask-portrait"
+          />
+        </div>
+
+        {/* FLOATING GLASS CARDS (Positioned around the centered illustration card) */}
+
+        {/* Card 1: Problem Solver */}
+        <div className="absolute top-4 -left-8 sm:-left-20 md:-left-32 animate-float-b1">
+          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-lavender/20 shadow-lavender-glow"
+               style={{boxShadow: '0 4px 24px rgba(242,212,146,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
+            <Puzzle size={18} className="text-girly-lavender shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Problem Solver</span>
+          </div>
+        </div>
+
+        {/* Card 2: Full-Stack Developer */}
+        <div className="absolute top-12 -right-10 sm:-right-22 md:-right-34 animate-float-b2">
+          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-pink/20 shadow-pink-glow"
+               style={{boxShadow: '0 4px 24px rgba(224,169,109,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
+            <Laptop size={18} className="text-girly-pink shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Full-Stack Developer</span>
+          </div>
+        </div>
+
+        {/* Card 3: Creative Thinker */}
+        <div className="absolute top-[33%] -left-12 sm:-left-24 md:-left-36 animate-float-b3">
+          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-pink/20 shadow-pink-glow"
+               style={{boxShadow: '0 4px 24px rgba(224,169,109,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
+            <Lightbulb size={18} className="text-girly-pink shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Creative Thinker</span>
+          </div>
+        </div>
+
+        {/* Card 4: Continuous Learner */}
+        <div className="absolute top-[50%] -right-12 sm:-right-24 md:-right-36 animate-float-b1">
+          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-lavender/20 shadow-lavender-glow"
+               style={{boxShadow: '0 4px 24px rgba(242,212,146,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
+            <GraduationCap size={18} className="text-girly-lavender shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Continuous Learner</span>
+          </div>
+        </div>
+
+        {/* Card 5: Innovator */}
+        <div className="absolute bottom-24 -left-10 sm:-left-22 md:-left-34 animate-float-b2">
+          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-lavender/20 shadow-lavender-glow"
+               style={{boxShadow: '0 4px 24px rgba(242,212,146,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
+            <Compass size={18} className="text-girly-lavender shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Innovator</span>
+          </div>
+        </div>
+
+        {/* Card 6: Detail-Oriented */}
+        <div className="absolute bottom-8 -right-8 sm:-right-20 md:-right-32 animate-float-b3">
+          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-pink/20 shadow-pink-glow"
+               style={{boxShadow: '0 4px 24px rgba(224,169,109,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
+            <Target size={18} className="text-girly-pink shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Detail-Oriented</span>
+          </div>
+        </div>
+
+        {/* Card 7: Currently @ PAROT */}
+        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:-bottom-4 sm:-left-4 md:-left-10 animate-float-b1 z-20">
+          <a
+            href="https://parot.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-morphism-premium px-4 py-2.5 rounded-full flex items-center gap-2.5 border border-girly-lavender/30 shadow-lavender-glow hover:border-girly-pink/50 hover:shadow-pink-glow transition-all duration-300 group cursor-pointer"
+            style={{boxShadow: '0 4px 24px rgba(242,212,146,0.25), inset 0 1px 0 rgba(255,255,255,0.10)'}}
+          >
+            {/* Pulsing green dot = online/active */}
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+            </span>
+            <span className="text-[11px] sm:text-xs font-semibold text-offwhite/90 font-sans tracking-wide whitespace-nowrap">
+              Currently @{' '}
+              <span className="text-girly-lavender group-hover:text-girly-pink transition-colors duration-200">PAROT</span>
+            </span>
+          </a>
+        </div>
+
+      </div>
+
+      {/* 
+        Bottom Layout Layer: split details and actions (z-20) 
+      */}
+      <div className="w-full max-w-7xl mx-auto z-10">
+        
+        {/* Horizontal dividing line */}
+        <div className="w-full h-[1px] bg-offwhite/10 mb-8" />
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
           
-          {/* Left Column: Bio Details */}
-          <div className="lg:col-span-7 text-center lg:text-left space-y-6 order-2 lg:order-1">
-            {/* Subtle top badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-plum-muted/60 border border-girly-pink/20 text-girly-pink text-xs font-semibold tracking-wide backdrop-blur-md">
-              <Sparkles size={12} className="animate-spin text-girly-pink" />
-              <span>B.Tech CSE Student (2023 - 2027)</span>
-            </div>
-
-            {/* Headline */}
-            <h1 className="text-4xl md:text-6xl xl:text-7xl font-extrabold tracking-tight font-sans leading-tight">
-              <span className="text-offwhite block">Hello, I'm</span>
-              <span className="bg-gradient-to-r from-girly-pink via-girly-lavender to-girly-pink bg-clip-text text-transparent text-glow-pink">
-                Aishwarya Das
-              </span>
-            </h1>
-
-            {/* Sub-headline */}
-            <h2 className="text-lg md:text-2xl text-offwhite/85 font-medium tracking-wide leading-relaxed">
-              CSE Student & Full-Stack Developer
-            </h2>
-
-            {/* Bio Blurb */}
-            <p className="text-offwhite/65 text-sm md:text-base max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
-              Building responsive MERN applications, QR-based asset logs, and PID-controlled hardware systems. 
-              Infusing deep computer science fundamentals with an elegant, modern visual identity.
+          {/* Bottom Left: Bio & Call to Actions */}
+          <div className="md:col-span-6 text-left space-y-3.5">
+            <p className="text-offwhite/85 text-xs sm:text-sm font-light leading-relaxed max-w-md">
+              Hello, I'm Aishwarya Das, a <strong className="font-semibold text-girly-pink">Full Stack Developer</strong> and AI Enthusiast based in India — currently working at{' '}
+              <a href="https://parot.dev/" target="_blank" rel="noopener noreferrer" className="font-semibold text-girly-lavender hover:text-girly-pink transition-colors duration-200 underline underline-offset-2 decoration-girly-lavender/40">PAROT</a>.
+              {' '}I build elegant, scalable, and intelligent digital experiences that blend creativity with technology.
             </p>
-
-            {/* Call to Actions */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-              <CustomButton 
-                onClick={(e) => handleScrollTo(e, 'projects')}
-                variant="primary"
-                className="w-full sm:w-auto text-sm py-2.5 px-6"
+            
+            {/* Call to Actions (Minimal links matching editorial theme) */}
+            <div className="flex items-center gap-5 pt-1">
+              <a 
+                href="#projects" 
+                onClick={(e) => handleScrollTo(e, 'projects')} 
+                className="text-xs font-bold text-girly-pink hover:text-girly-lavender transition-all flex items-center gap-1 cursor-pointer group"
               >
-                Explore Projects
-                <ArrowRight size={16} />
-              </CustomButton>
-
-              <CustomButton 
-                onClick={(e) => handleScrollTo(e, 'contact')}
-                variant="secondary"
-                className="w-full sm:w-auto text-sm py-2.5 px-6"
+                View Projects 
+                <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </a>
+              
+              <a 
+                href="/resume.pdf" 
+                download="Aishwarya_Das_Resume.pdf" 
+                className="text-xs font-bold text-offwhite/60 hover:text-offwhite transition-all flex items-center gap-1 cursor-pointer group"
               >
-                Get In Touch
-              </CustomButton>
-            </div>
-
-            {/* Technical Terminal Widget */}
-            <div className="max-w-md mx-auto lg:mx-0 p-4 rounded-xl bg-plum-muted/30 border border-girly-lavender/10 backdrop-blur-md text-left text-xs font-mono text-offwhite/50 glass-morphism pt-3">
-              <div className="flex items-center justify-between border-b border-girly-lavender/10 pb-2 mb-2.5">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-girly-pink/60" />
-                  <span className="w-2 h-2 rounded-full bg-girly-lavender/60" />
-                  <span className="w-2 h-2 rounded-full bg-offwhite/20" />
-                </div>
-                <span className="text-[9px]">AishwaryaTerminal v1.2.0</span>
-              </div>
-              <div className="space-y-1">
-                <p className="text-girly-lavender flex items-center gap-1">
-                  <span className="text-girly-pink">&gt;</span> const dev = new Student("Aishwarya");
-                </p>
-                <p className="text-offwhite/60">
-                  <span className="text-girly-pink">&gt;</span> dev.college = "JIS College of Engineering";
-                </p>
-                <p className="text-offwhite/60">
-                  <span className="text-girly-pink">&gt;</span> dev.cgpa = 8.62;
-                </p>
-                <p className="text-girly-pink flex items-center gap-1">
-                  <span className="text-girly-pink">&gt;</span> dev.openForInternships = true;
-                </p>
-              </div>
+                Download Resume 
+                <span className="group-hover:translate-y-0.5 transition-transform">&darr;</span>
+              </a>
             </div>
           </div>
-          
-          {/* Right Column: Profile Photo */}
-          <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
-            <div className="relative group">
-              
-              {/* Outer decorative glowing ring */}
-              <div className="absolute -inset-2 bg-gradient-to-r from-girly-pink to-girly-lavender rounded-full blur opacity-35 group-hover:opacity-80 transition duration-1000 group-hover:duration-200 animate-tilt" />
-              
-              {/* Image Container Frame (Circular & Large) */}
-              <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-[360px] lg:h-[360px] xl:w-[400px] xl:h-[400px] rounded-full overflow-hidden border border-girly-pink/20 group-hover:border-girly-pink/50 transition-colors duration-500 bg-plum-muted glass-morphism">
-                
-                {/* Background ambient lighting behind image */}
-                <div className="absolute inset-0 bg-gradient-to-t from-darkBg-primary/80 via-transparent to-transparent opacity-85 z-10 pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-tr from-girly-pink/10 to-girly-lavender/10 group-hover:scale-105 transition-transform duration-500" />
-                
-                {/* Actual image */}
-                <img 
-                  src="/profile.jpg" 
-                  alt="Aishwarya Das" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-                />
-                
-                {/* Floating badge centered at the bottom of the circle */}
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-darkBg-primary/95 border border-girly-lavender/30 backdrop-blur-sm text-[9px] font-mono text-girly-pink font-semibold shadow-lg">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Actively Coding</span>
-                </div>
-              </div>
-            </div>
+
+          {/* Bottom Right: Slogan Detail */}
+          <div className="md:col-span-6 md:text-right text-left">
+            <p className="text-offwhite/60 text-xs sm:text-sm font-light leading-relaxed max-w-sm md:ml-auto">
+              Passionate about crafting beautiful user interfaces, solving real-world problems, and developing impactful AI-powered applications.
+            </p>
           </div>
 
         </div>
+
+        {/* Footer Notes (Copyright & Scroll indicator) */}
+        <div className="flex items-center justify-between text-[9px] sm:text-[10px] text-offwhite/30 uppercase tracking-widest pt-8 mt-6 border-t border-offwhite/5">
+          <span>© Aishwarya Das {new Date().getFullYear()}</span>
+          <a 
+            href="#about" 
+            onClick={(e) => handleScrollTo(e, 'about')}
+            className="hover:text-girly-pink transition-colors duration-300 flex items-center gap-1 cursor-pointer"
+          >
+            (Scroll down)
+          </a>
+        </div>
+
       </div>
 
-      {/* Floating background decorative icons */}
-      <div className="hidden xl:block absolute top-1/4 left-8 text-girly-lavender/20 pointer-events-none animate-float">
-        <Code2 size={60} />
-      </div>
-      <div className="hidden xl:block absolute bottom-1/4 right-8 text-girly-pink/15 pointer-events-none animate-float" style={{ animationDelay: '3s' }}>
-        <Terminal size={70} />
-      </div>
     </section>
   );
 };

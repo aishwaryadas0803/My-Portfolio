@@ -1,41 +1,181 @@
-import React from 'react';
-import { GraduationCap, Award, Brain, Laptop, Database, PenTool, CheckCircle, BookOpen } from 'lucide-react';
+'use client';
+
+import React, { useEffect, useRef, useState } from 'react';
+import { GraduationCap, Brain, BookOpen, Code2, Layers, Database, Wrench } from 'lucide-react';
+
+// Hook: fires once when element enters the viewport
+function useInView(threshold = 0.2) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+  return [ref, inView];
+}
+
+// Timeline dot with pulsing ring animation
+function TimelineDot({ color, delay = 0, inView }) {
+  return (
+    <div className="absolute -left-[9px] top-4 z-10">
+      {/* Pulsing ring */}
+      <span
+        className="absolute inset-0 rounded-full animate-ping opacity-0"
+        style={{
+          backgroundColor: color === 'pink' ? 'rgba(224,169,109,0.4)' : color === 'lavender' ? 'rgba(242,212,146,0.4)' : 'rgba(227,227,230,0.2)',
+          animationDelay: `${delay}ms`,
+          opacity: inView ? undefined : 0,
+        }}
+      />
+      {/* Core dot */}
+      <div
+        className="relative w-4 h-4 rounded-full border-2 border-darkBg-primary transition-all duration-500"
+        style={{
+          backgroundColor: color === 'pink' ? '#E0A96D' : color === 'lavender' ? '#F2D492' : '#555',
+          transform: inView ? 'scale(1)' : 'scale(0)',
+          transitionDelay: `${delay}ms`,
+        }}
+      />
+    </div>
+  );
+}
+
+// Animated timeline card
+function TimelineCard({ delay, inView, dotColor, year, title, school, badge, badgeColor }) {
+  const badgeStyles = {
+    lavender: 'bg-girly-lavender/10 border-girly-lavender/20 text-girly-lavender',
+    pink: 'bg-girly-pink/10 border-girly-pink/20 text-girly-pink',
+    white: 'bg-offwhite/10 border-offwhite/20 text-offwhite',
+  };
+
+  return (
+    <div
+      className="relative pl-5"
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateX(0)' : 'translateX(-32px)',
+        transition: `opacity 0.6s ease ${delay}ms, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+      }}
+    >
+      <TimelineDot color={dotColor} delay={delay + 200} inView={inView} />
+      <div className="p-4 rounded-xl bg-plum-muted/30 border border-girly-lavender/10 glass-morphism hover:border-girly-pink/40 hover:-translate-y-0.5 hover:shadow-pink-glow transition-all duration-300 cursor-default">
+        <span className="text-[10px] font-semibold text-girly-pink bg-girly-pink/10 px-2 py-0.5 rounded-full">{year}</span>
+        <h5 className="text-sm font-bold text-offwhite mt-1.5">{title}</h5>
+        <p className="text-xs text-offwhite/60">{school}</p>
+        <div className={`mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${badgeStyles[badgeColor]}`}>
+          {badge}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Full animated timeline section
+function TimelineSection() {
+  const [ref, inView] = useInView(0.15);
+
+  return (
+    <div id="experience" ref={ref} className="space-y-5 scroll-mt-28">
+      {/* Heading fade-in */}
+      <h3
+        className="text-xl font-bold text-offwhite font-sans tracking-wide flex items-center gap-2 transition-all duration-500"
+        style={{ opacity: inView ? 1 : 0, transform: inView ? 'translateY(0)' : 'translateY(-12px)' }}
+      >
+        <GraduationCap
+          className="text-girly-pink"
+          size={20}
+          style={{
+            filter: inView ? 'drop-shadow(0 0 8px rgba(224,169,109,0.6))' : 'none',
+            transition: 'filter 0.8s ease 0.3s',
+          }}
+        />
+        Education Timeline
+      </h3>
+
+      {/* Vertical line that draws in from top */}
+      <div className="relative">
+        <div
+          className="absolute left-0 top-0 w-0.5 bg-gradient-to-b from-girly-pink/60 via-girly-lavender/40 to-transparent rounded-full"
+          style={{
+            height: inView ? '100%' : '0%',
+            transition: 'height 1.2s cubic-bezier(0.22,1,0.36,1) 0.1s',
+          }}
+        />
+
+        {/* Cards */}
+        <div className="space-y-5">
+          <TimelineCard
+            delay={150}
+            inView={inView}
+            dotColor="pink"
+            year="2023 – 2027"
+            title="B.Tech in Computer Science & Engineering"
+            school="JIS College of Engineering | Kalyani, WB"
+            badge="CGPA: 8.62"
+            badgeColor="lavender"
+          />
+          <TimelineCard
+            delay={350}
+            inView={inView}
+            dotColor="lavender"
+            year="2020 – 2022"
+            title="Higher Secondary (XII)"
+            school="Kanksa High School, W.B."
+            badge="Score: 93%"
+            badgeColor="pink"
+          />
+          <TimelineCard
+            delay={550}
+            inView={inView}
+            dotColor="white"
+            year="2010 – 2020"
+            title="Secondary (X)"
+            school="Ramkrishna Ashram Vidyapith, W.B."
+            badge="Score: 89%"
+            badgeColor="white"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const About = () => {
   const skillCategories = [
     {
       title: "Languages",
-      icon: Laptop,
+      icon: Code2,
       color: "text-girly-pink",
+      border: "hover:border-girly-pink/30",
       skills: ["Java", "Python", "C", "C++", "JavaScript", "TypeScript", "HTML", "CSS"]
     },
     {
       title: "Frameworks & Libraries",
-      icon: Brain,
+      icon: Layers,
       color: "text-girly-lavender",
+      border: "hover:border-girly-lavender/30",
       skills: ["React.js", "Next.js", "Node.js", "Express.js", "Tailwind CSS"]
     },
     {
       title: "Databases",
       icon: Database,
       color: "text-girly-pink",
+      border: "hover:border-girly-pink/30",
       skills: ["MongoDB", "MySQL"]
     },
     {
       title: "Tools & OS",
-      icon: PenTool,
+      icon: Wrench,
       color: "text-girly-lavender",
+      border: "hover:border-girly-lavender/30",
       skills: ["Git", "GitHub", "VS Code", "Arduino IDE", "Windows", "Ubuntu"]
     }
-  ];
-
-  const certifications = [
-    { name: "Programming in Java (Elite Gold)", provider: "NPTEL, IIT Kharagpur", year: "2025" },
-    { name: "Principles of Management", provider: "NPTEL, IIT Roorkee", year: "2025" },
-    { name: "MERN Stack Training", provider: "Ardent Computech", year: "2026" },
-    { name: "Python for AI & ML", provider: "Udemy", year: "2026" },
-    { name: "Cyber Security Training", provider: "Ardent Computech", year: "2025" },
-    { name: "Android App Development", provider: "Euphoria GenX", year: "2024" }
   ];
 
   const relevantCourses = [
@@ -44,163 +184,151 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-24 px-6 relative bg-darkBg-secondary/20">
-      {/* Background decoration */}
-      <div className="absolute top-1/2 left-0 w-80 h-80 rounded-full bg-girly-lavender/5 blur-3xl pointer-events-none" />
+    <>
+      {/* ═══════════════════════════════════════════════════
+          SECTION 1: ACADEMIC QUALIFICATIONS
+      ═══════════════════════════════════════════════════ */}
+      <section id="about" className="py-24 px-6 relative bg-darkBg-secondary/20">
+        {/* Background orb */}
+        <div className="absolute top-1/3 left-0 w-96 h-96 rounded-full bg-girly-pink/5 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-72 h-72 rounded-full bg-girly-lavender/5 blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto">
-        {/* Section Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-girly-pink mb-3">About Me</h2>
-          <p className="text-3xl md:text-5xl font-bold text-offwhite tracking-tight">Academic Profile & Qualifications</p>
-          <div className="w-16 h-1 bg-gradient-to-r from-girly-pink to-girly-lavender mx-auto mt-4 rounded-full" />
-        </div>
-
-        {/* Main Grid: Left (Education & Summary) | Right (Skills & Courses) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-16">
-          {/* Left Column: Education / Accomplishments */}
-          <div className="lg:col-span-5 space-y-8">
-            <h3 className="text-2xl font-bold text-offwhite font-sans tracking-wide">My Journey</h3>
-            <p className="text-offwhite/70 leading-relaxed font-light text-sm">
-              I am a Computer Science Engineering student with hands-on expertise in full-stack web development (MERN Stack), 
-              embedded systems, and real-time applications. Proficient in Java, Python, C++, and modern JavaScript frameworks, 
-              I am capable of delivering production-grade projects from concept to deployment.
+        <div className="max-w-7xl mx-auto">
+          {/* Section Heading */}
+          <div className="text-center mb-16">
+            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-girly-pink mb-3">
+              <GraduationCap size={14} />
+              Education
+            </span>
+            <p className="text-3xl md:text-5xl font-bold text-offwhite tracking-tight">Academic Qualifications</p>
+            <div className="w-16 h-1 bg-gradient-to-r from-girly-pink to-girly-lavender mx-auto mt-4 rounded-full" />
+            <p className="mt-4 text-offwhite/50 text-sm font-light max-w-lg mx-auto">
+              My educational journey and coursework that shaped my foundation in Computer Science.
             </p>
-
-            {/* Education Timeline */}
-            <div className="space-y-4">
-              <h4 className="text-lg font-bold text-offwhite/90 font-sans tracking-wide flex items-center gap-2">
-                <GraduationCap className="text-girly-pink" size={20} />
-                Education Timeline
-              </h4>
-
-              {/* B.Tech */}
-              <div className="p-4 rounded-xl bg-plum-muted/30 border border-girly-lavender/10 glass-morphism relative hover:border-girly-pink/30 transition-all duration-300">
-                <span className="text-[10px] font-semibold text-girly-pink bg-girly-pink/10 px-2 py-0.5 rounded-full">2023 – 2027</span>
-                <h5 className="text-sm font-bold text-offwhite mt-1.5">B.Tech in Computer Science & Engineering</h5>
-                <p className="text-xs text-offwhite/60">JIS College of Engineering | Kalyani, WB</p>
-                <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-girly-lavender/10 border border-girly-lavender/20 text-girly-lavender">
-                  <span>CGPA: 8.62</span>
-                </div>
-              </div>
-
-              {/* XII */}
-              <div className="p-4 rounded-xl bg-plum-muted/30 border border-girly-lavender/10 glass-morphism relative hover:border-girly-pink/30 transition-all duration-300">
-                <span className="text-[10px] font-semibold text-girly-pink bg-girly-pink/10 px-2 py-0.5 rounded-full">2020 – 2022</span>
-                <h5 className="text-sm font-bold text-offwhite mt-1.5">Higher Secondary (XII)</h5>
-                <p className="text-xs text-offwhite/60">Kanksa High School, W.B.</p>
-                <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-girly-pink/10 border border-girly-pink/20 text-girly-pink">
-                  <span>Score: 93%</span>
-                </div>
-              </div>
-
-              {/* X */}
-              <div className="p-4 rounded-xl bg-plum-muted/30 border border-girly-lavender/10 glass-morphism relative hover:border-girly-pink/30 transition-all duration-300">
-                <span className="text-[10px] font-semibold text-girly-pink bg-girly-pink/10 px-2 py-0.5 rounded-full">2010 – 2020</span>
-                <h5 className="text-sm font-bold text-offwhite mt-1.5">Secondary (X)</h5>
-                <p className="text-xs text-offwhite/60">Ramkrishna Ashram Vidyapith, W.B.</p>
-                <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-offwhite/10 border border-offwhite/20 text-offwhite">
-                  <span>Score: 89%</span>
-                </div>
-              </div>
-            </div>
           </div>
 
-          {/* Right Column: Skills Matrix & Coursework */}
-          <div className="lg:col-span-7 space-y-8">
-            {/* Skills */}
-            <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-offwhite font-sans tracking-wide">Technical Matrix</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {skillCategories.map((category, idx) => {
-                  const Icon = category.icon;
-                  return (
-                    <div 
-                      key={idx} 
-                      className="p-5 rounded-xl bg-plum-muted/20 border border-girly-lavender/5 glass-morphism hover:border-girly-lavender/20 transition-all duration-300"
-                    >
-                      <div className="flex items-center gap-2 mb-3">
-                        <Icon className={`${category.color}`} size={16} />
-                        <h4 className="text-sm font-bold text-offwhite">{category.title}</h4>
-                      </div>
-                      <div className="flex flex-wrap gap-1.5">
-                        {category.skills.map((skill) => (
-                          <span 
-                            key={skill} 
-                            className="px-2 py-0.8 rounded bg-darkBg-primary/60 border border-girly-pink/5 hover:border-girly-pink/20 text-offwhite/80 text-[10.5px] transition-colors"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+          {/* Education Timeline + Coursework — Full Width Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+            
+            {/* Left: Education Timeline */}
+            <TimelineSection />
 
-            {/* Relevant Coursework */}
-            <div className="space-y-4">
-              <h4 className="text-lg font-bold text-offwhite/90 font-sans tracking-wide flex items-center gap-2">
+            {/* Right: Relevant Coursework */}
+            <div className="space-y-6">
+              <h4 className="text-xl font-bold text-offwhite/90 font-sans tracking-wide flex items-center gap-2">
                 <BookOpen className="text-girly-lavender" size={20} />
                 Relevant Coursework
               </h4>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {relevantCourses.map((course, idx) => (
-                  <div 
-                    key={idx} 
-                    className="p-3 rounded-lg bg-plum-muted/10 border border-girly-lavender/5 text-center text-xs font-light text-offwhite/85 hover:border-girly-lavender/20 hover:bg-plum-muted/20 transition-all"
+                  <div
+                    key={idx}
+                    className="group p-4 rounded-xl bg-plum-muted/15 border border-girly-lavender/10 text-center text-sm font-medium text-offwhite/85 hover:border-girly-pink/30 hover:bg-plum-muted/30 hover:shadow-pink-glow/10 transition-all duration-300 cursor-default"
                   >
                     {course}
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Certifications and Achievement Row */}
-        <div className="border-t border-girly-lavender/5 pt-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            {/* Certifications */}
-            <div className="lg:col-span-8 space-y-4">
-              <h3 className="text-xl font-bold text-offwhite font-sans tracking-wide flex items-center gap-2">
-                <Award className="text-girly-lavender" size={20} />
-                Certifications
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {certifications.map((cert, idx) => (
-                  <div key={idx} className="flex items-start gap-3 p-3 rounded-lg bg-plum-muted/15 border border-girly-lavender/5 hover:border-girly-pink/20 transition-all duration-300">
-                    <CheckCircle size={14} className="text-girly-pink mt-0.5 shrink-0" />
-                    <div>
-                      <h4 className="text-xs font-bold text-offwhite">{cert.name}</h4>
-                      <p className="text-[10px] text-offwhite/50">{cert.provider} ({cert.year})</p>
-                    </div>
-                  </div>
-                ))}
+              {/* Professional Summary Card */}
+              <div className="p-6 rounded-2xl bg-plum-muted/15 border border-girly-lavender/8 glass-morphism relative overflow-hidden">
+                <div className="absolute top-0 right-0 -mr-10 -mt-10 w-28 h-28 rounded-full bg-girly-lavender/10 blur-2xl pointer-events-none" />
+                <h4 className="text-base font-bold text-offwhite mb-3 relative z-10">Professional Summary</h4>
+                <p className="text-sm text-offwhite/60 font-light leading-relaxed relative z-10">
+                  Computer Science Engineering student currently working at{' '}
+                  <a href="https://parot.dev/" target="_blank" rel="noopener noreferrer" className="text-girly-lavender hover:text-girly-pink transition-colors duration-200 font-semibold">PAROT</a>
+                  , with hands-on expertise in full-stack web development (MERN Stack),
+                  embedded systems, and real-time applications. Proficient in Java, Python, C++, and modern JavaScript frameworks.
+                  Capable of independently delivering production-grade projects from concept to deployment, with a strong
+                  foundation in algorithms, databases, and software engineering principles.
+                </p>
+                <div className="flex flex-wrap gap-2 mt-4 relative z-10">
+                  {["MERN Stack", "Embedded Systems", "Algorithms", "PID Control", "REST APIs"].map((tag) => (
+                    <span key={tag} className="px-3 py-1 rounded-full bg-darkBg-primary/50 border border-girly-pink/10 text-[10px] font-semibold text-girly-pink/80">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-
-            {/* Achievement Highlight */}
-            <div className="lg:col-span-4 p-5 rounded-xl bg-plum-muted/30 border border-girly-pink/20 shadow-pink-glow/5 relative overflow-hidden glass-morphism">
-              <div className="absolute top-0 right-0 -mr-8 -mt-8 w-20 h-20 rounded-full bg-girly-pink/10 blur-xl pointer-events-none" />
-              <h3 className="text-lg font-bold text-girly-pink font-sans tracking-wide mb-3 flex items-center gap-2">
-                <Award size={18} className="animate-pulse" />
-                Key Achievement
-              </h3>
-              <h4 className="text-sm font-bold text-offwhite mb-1">NPTEL Elite Gold Medal</h4>
-              <p className="text-[11px] text-offwhite/60 mb-2">Programming in Java | IIT Kharagpur (2025)</p>
-              <p className="text-xs font-light text-offwhite/70 leading-relaxed">
-                Awarded for outstanding performance, positioning in the top national percentile of examinees for Java programming excellence.
-              </p>
-            </div>
-
           </div>
         </div>
+      </section>
 
-      </div>
-    </section>
+      {/* ═══════════════════════════════════════════════════
+          SECTION 2: TECHNICAL KNOWLEDGE
+      ═══════════════════════════════════════════════════ */}
+      <section id="skills" className="py-24 px-6 relative scroll-mt-20">
+        {/* Background orbs */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 rounded-full bg-girly-lavender/6 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-girly-pink/5 blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto">
+          {/* Section Heading */}
+          <div className="text-center mb-16">
+            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-girly-lavender mb-3">
+              <Brain size={14} />
+              Tech Stack
+            </span>
+            <p className="text-3xl md:text-5xl font-bold text-offwhite tracking-tight">Technical Knowledge</p>
+            <div className="w-16 h-1 bg-gradient-to-r from-girly-lavender to-girly-pink mx-auto mt-4 rounded-full" />
+            <p className="mt-4 text-offwhite/50 text-sm font-light max-w-lg mx-auto">
+              Languages, frameworks, databases and tools I use to build robust, scalable, and elegant digital experiences.
+            </p>
+          </div>
+
+          {/* Skills Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            {skillCategories.map((category, idx) => {
+              const Icon = category.icon;
+              return (
+                <div
+                  key={idx}
+                  className={`p-6 rounded-2xl bg-plum-muted/20 border border-girly-lavender/8 glass-morphism ${category.border} transition-all duration-300 group`}
+                >
+                  {/* Card header */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`p-2 rounded-lg bg-darkBg-primary/50 border border-girly-lavender/10`}>
+                      <Icon className={category.color} size={18} />
+                    </div>
+                    <h4 className="text-sm font-bold text-offwhite tracking-wide">{category.title}</h4>
+                  </div>
+                  {/* Skill tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {category.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-3 py-1 rounded-full bg-darkBg-primary/60 border border-girly-pink/8 hover:border-girly-pink/30 text-offwhite/80 text-[11px] font-medium transition-all cursor-default hover:text-offwhite hover:bg-darkBg-primary/90"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Summary Stats Row */}
+          <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-5">
+            {[
+              { number: "8+", label: "Languages Known" },
+              { number: "5+", label: "Frameworks & Libraries" },
+              { number: "6+", label: "Certifications Earned" },
+              { number: "8.62", label: "CGPA (B.Tech)" },
+            ].map((stat, idx) => (
+              <div key={idx} className="text-center p-5 rounded-2xl glass-morphism bg-plum-muted/15 border border-girly-lavender/8 hover:border-girly-pink/20 transition-all">
+                <p className="text-3xl md:text-4xl font-black bg-text-gradient bg-clip-text"
+                   style={{backgroundImage: 'linear-gradient(135deg, #E0A96D, #F2D492)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
+                  {stat.number}
+                </p>
+                <p className="text-xs text-offwhite/55 mt-1.5 font-light">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 

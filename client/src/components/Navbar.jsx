@@ -1,42 +1,40 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Download, Menu, X, Terminal } from 'lucide-react';
-import CustomButton from './CustomButton';
+import { Home, User, Briefcase, Code2, GraduationCap, Award, Mail, Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
-  const [scrolled, setScrolled] = useState(false);
 
   const navItems = [
-    { id: 'hero', name: 'Home' },
-    { id: 'about', name: 'About' },
-    { id: 'projects', name: 'Projects' },
-    { id: 'contact', name: 'Contact' },
+    { id: 'hero',         name: 'Home',     icon: Home },
+    { id: 'introduction', name: 'Intro',    icon: User },
+    { id: 'about',        name: 'About',    icon: GraduationCap },
+    { id: 'certifications', name: 'Certs', icon: Award },
+    { id: 'projects',     name: 'Projects', icon: Briefcase },
+    { id: 'contact',      name: 'Contact',  icon: Mail },
   ];
 
-  // Track scrolled state for styling
+  // Track scroll position to update active nav state
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+      if (window.scrollY < 100) {
+        setActiveSection('hero');
+        return;
       }
 
-      // Track active section on scroll
-      const sections = navItems.map(item => document.getElementById(item.id));
-      const scrollPosition = window.scrollY + 150; // offset for nav height
+      const scrollPosition = window.scrollY + 200; // offset for nav height
 
-      for (let i = 0; i < sections.length; i++) {
-        const section = sections[i];
+      for (let i = 0; i < navItems.length; i++) {
+        const item = navItems[i];
+        const section = document.getElementById(item.id);
         if (section) {
           const top = section.offsetTop;
           const height = section.offsetHeight;
 
           if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(navItems[i].id);
+            setActiveSection(item.id);
             break;
           }
         }
@@ -44,15 +42,26 @@ const Navbar = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // initial check
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleNavClick = (e, id) => {
     e.preventDefault();
     setIsOpen(false);
+    
+    if (id === 'hero') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      setActiveSection('hero');
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
-      const offset = 80; // nav height
+      const offset = 100;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -62,103 +71,61 @@ const Navbar = () => {
         top: offsetPosition,
         behavior: 'smooth'
       });
+      setActiveSection(id);
     }
   };
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-      scrolled 
-        ? 'glass-morphism-nav shadow-lg py-4' 
-        : 'bg-transparent py-6'
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
-        <a 
-          href="#hero" 
-          onClick={(e) => handleNavClick(e, 'hero')}
-          className="flex items-center gap-2 group font-sans font-bold text-2xl tracking-tight"
-        >
-          <Terminal size={22} className="text-girly-pink group-hover:rotate-6 transition-transform duration-300" />
-          <span className="text-offwhite">Aishwarya</span>
-          <span className="text-girly-pink text-glow-pink">Das.</span>
-        </a>
-
-        {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-8">
-          <ul className="flex items-center gap-8">
-            {navItems.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  onClick={(e) => handleNavClick(e, item.id)}
-                  className={`relative font-sans text-sm font-medium tracking-wide transition-colors duration-300 py-1 ${
-                    activeSection === item.id 
-                      ? 'text-girly-pink font-semibold' 
-                      : 'text-offwhite/70 hover:text-girly-pink'
-                  }`}
-                >
-                  {item.name}
-                  {/* Highlight bar */}
-                  {activeSection === item.id && (
-                    <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-girly-pink to-girly-lavender shadow-pink-glow rounded-full" />
-                  )}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <CustomButton 
-            href="/resume.pdf" 
-            variant="primary" 
-            className="text-xs py-2 px-5"
-            download="Aishwarya_Das_Resume.pdf"
+    <div className="fixed top-6 left-0 w-full z-50 flex justify-center px-4 pointer-events-none">
+      {/* 
+        Floating Capsule Navbar: 
+        Minimal, centered black pill with white active tab matching reference. 
+      */}
+      <nav className="pointer-events-auto bg-[#0d0914]/90 border border-offwhite/10 rounded-full px-2.5 py-1.5 flex flex-col md:flex-row items-center gap-1 shadow-2xl backdrop-blur-md max-w-fit">
+        
+        {/* Mobile Navbar Header Row */}
+        <div className="w-full md:w-auto flex items-center justify-between px-3 md:hidden">
+          <span className="text-xs font-semibold uppercase tracking-widest text-offwhite/75 mr-8">Aishwarya Das</span>
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-offwhite/80 hover:text-girly-pink transition-colors focus:outline-none cursor-pointer py-1"
+            aria-label="Toggle menu"
           >
-            <Download size={14} className="mr-1 inline" />
-            Resume
-          </CustomButton>
+            {isOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
         </div>
 
-        {/* Mobile Menu Toggle Button */}
-        <button 
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-offwhite/90 hover:text-girly-pink transition-colors focus:outline-none"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Sidebar Panel */}
-      {isOpen && (
-        <div className="absolute top-full left-0 w-full bg-darkBg-secondary border-b border-girly-lavender/10 shadow-2xl glass-morphism py-6 px-6 md:hidden transition-all duration-300">
-          <ul className="flex flex-col gap-5 mb-6">
-            {navItems.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  onClick={(e) => handleNavClick(e, item.id)}
-                  className={`block font-sans text-base font-medium py-1 ${
-                    activeSection === item.id 
-                      ? 'text-girly-pink text-glow-pink' 
-                      : 'text-offwhite/70 hover:text-girly-pink'
-                  }`}
-                >
-                  {item.name}
-                </a>
-              </li>
-            ))}
+        {/* Navigation Items Links */}
+        <div className={`${
+          isOpen ? 'flex flex-col mt-2.5 border-t border-offwhite/5 pt-2 w-48' : 'hidden'
+        } md:flex md:flex-row md:items-center md:gap-1.5 md:mt-0 md:border-t-0 md:pt-0 md:w-auto`}>
+          <ul className="flex flex-col md:flex-row md:items-center gap-1 w-full">
+            {navItems.map((item) => {
+              const IconComponent = item.icon;
+              const isActive = activeSection === item.id;
+              
+              return (
+                <li key={item.id} className="w-full md:w-auto">
+                  <a
+                    href={`#${item.id}`}
+                    onClick={(e) => handleNavClick(e, item.id)}
+                    className={`flex items-center justify-center md:justify-start gap-1.5 font-sans text-xs font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
+                      isActive 
+                        ? 'bg-offwhite text-darkBg-primary font-bold shadow-md scale-105' 
+                        : 'text-offwhite/70 hover:text-offwhite hover:bg-white/5'
+                    }`}
+                  >
+                    {isActive && <IconComponent size={13} className="stroke-[2.5px]" />}
+                    <span>{item.name}</span>
+                  </a>
+                </li>
+              );
+            })}
           </ul>
-          <CustomButton 
-            href="/resume.pdf" 
-            variant="primary" 
-            className="w-full justify-center"
-            download="Aishwarya_Das_Resume.pdf"
-          >
-            <Download size={16} className="mr-1 inline" />
-            Download Resume
-          </CustomButton>
         </div>
-      )}
-    </nav>
+
+      </nav>
+    </div>
   );
 };
 
