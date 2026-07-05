@@ -28,7 +28,7 @@ const certifications = [
     iconColor: "text-girly-lavender",
     badgeColor: "bg-girly-lavender/10 text-girly-lavender border-girly-lavender/20",
     isGold: false,
-    image: null
+    image: "/certificates/management.jpg"
   },
   {
     name: "Full Stack Development Using MERN",
@@ -94,7 +94,7 @@ const certifications = [
     badgeColor: "bg-slate-400/10 text-slate-300 border-slate-400/20",
     isGold: false,
     isSilver: true,
-    image: null
+    image: "/certificates/cloudcomputing.png"
   }
 ];
 
