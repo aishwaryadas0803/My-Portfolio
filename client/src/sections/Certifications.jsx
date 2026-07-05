@@ -101,6 +101,18 @@ const certifications = [
 const Certifications = () => {
   const [selectedCert, setSelectedCert] = useState(null);
 
+  // Lock body scroll when certificate popup is active (especially important for mobile browsers)
+  React.useEffect(() => {
+    if (selectedCert) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedCert]);
+
   return (
     <section id="certifications" className="py-24 px-6 relative">
       {/* Background ambient decoration */}
@@ -126,7 +138,7 @@ const Certifications = () => {
                 key={idx}
                 onClick={() => hasPreview && setSelectedCert(cert)}
                 className={`group relative p-6 rounded-2xl bg-plum-muted/30 border ${cert.borderColor} glass-morphism transition-all duration-500 hover:shadow-pink-glow/30 overflow-hidden w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] ${
-                  hasPreview ? 'cursor-pointer' : 'cursor-default'
+                  hasPreview ? 'cursor-pointer active:scale-95 touch-manipulation' : 'cursor-default'
                 }`}
               >
                 {/* Background gradient accent */}
@@ -195,7 +207,7 @@ const Certifications = () => {
           <div className="absolute bottom-0 left-0 -ml-8 -mb-8 w-32 h-32 rounded-full bg-girly-lavender/10 blur-2xl pointer-events-none" />
 
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
-            <div className="p-4 rounded-2xl bg-yellow-400/10 border border-yellow-400/20 shrink-0">
+            <div className="p-4 rounded-2xl bg-yellow-400/10 border border-yellow-400/25 shrink-0">
               <Award size={36} className="text-yellow-400" />
             </div>
             <div>
@@ -215,33 +227,34 @@ const Certifications = () => {
       {/* popup Modal */}
       {selectedCert && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-4 bg-black/90 backdrop-blur-md animate-fade-in touch-none"
           onClick={() => setSelectedCert(null)}
         >
           <div 
-            className="relative max-w-4xl w-full max-h-[85vh] rounded-2xl border border-offwhite/10 bg-darkBg-secondary/90 shadow-2xl p-2 md:p-4 overflow-hidden flex flex-col items-center justify-center glass-morphism"
+            className="relative max-w-4xl w-full max-h-[90vh] md:max-h-[85vh] rounded-2xl border border-offwhite/10 bg-darkBg-secondary/95 shadow-2xl p-3 overflow-hidden flex flex-col items-center justify-center glass-morphism animate-scale-up"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="w-full flex justify-between items-center px-4 py-2 border-b border-offwhite/5 mb-3">
-              <div>
-                <h4 className="text-sm md:text-base font-bold text-offwhite">{selectedCert.name}</h4>
-                <p className="text-[10px] md:text-xs text-offwhite/50">{selectedCert.provider} ({selectedCert.year})</p>
+            <div className="w-full flex justify-between items-center px-2 md:px-4 py-2 border-b border-offwhite/5 mb-3">
+              <div className="pr-4">
+                <h4 className="text-xs md:text-base font-bold text-offwhite leading-tight">{selectedCert.name}</h4>
+                <p className="text-[9px] md:text-xs text-offwhite/50">{selectedCert.provider} ({selectedCert.year})</p>
               </div>
               <button 
                 onClick={() => setSelectedCert(null)}
-                className="p-1 rounded-full hover:bg-white/10 text-offwhite/70 hover:text-offwhite transition-colors cursor-pointer focus:outline-none"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 active:bg-white/10 text-offwhite/70 active:text-offwhite hover:bg-white/10 hover:text-offwhite transition-colors cursor-pointer focus:outline-none shrink-0 touch-manipulation"
+                aria-label="Close modal"
               >
                 <X size={20} />
               </button>
             </div>
 
             {/* Modal Image container */}
-            <div className="relative flex-grow w-full overflow-auto flex items-center justify-center bg-black/40 rounded-xl p-2 max-h-[70vh]">
+            <div className="relative flex-grow w-full overflow-auto flex items-center justify-center bg-black/40 rounded-xl p-1.5 md:p-2 max-h-[75vh] md:max-h-[70vh]">
               <img 
                 src={selectedCert.image} 
                 alt={`${selectedCert.name} Certificate`} 
-                className="max-w-full max-h-[65vh] object-contain rounded-lg shadow-xl"
+                className="max-w-full max-h-[70vh] md:max-h-[65vh] object-contain rounded-lg shadow-xl select-none pointer-events-none md:pointer-events-auto"
               />
             </div>
           </div>
