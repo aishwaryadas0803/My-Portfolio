@@ -128,7 +128,7 @@ function ProfileImage({ inView }) {
         transition: 'opacity 0.8s ease 0.4s, transform 0.8s cubic-bezier(0.22,1,0.36,1) 0.4s',
         perspective: 1000
       }}
-      className="relative w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[400px] mx-auto lg:mx-0 shrink-0 mt-12 lg:mt-0"
+      className="relative w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[400px] mx-auto lg:mx-0 shrink-0"
     >
       <div className="absolute inset-0 bg-yellow-500/15 rounded-full blur-[70px] -z-10 group-hover:bg-yellow-500/25 transition-colors duration-500" />
       
@@ -208,9 +208,9 @@ const Introduction = () => {
       ref={sectionRef}
       className="relative py-28 px-6 overflow-hidden bg-darkBg-primary scroll-mt-20"
     >
-      {/* Gradient bridge from Hero (#16121E) → this section (#0B0B0C) */}
+      {/* Gradient bridge from Hero to Introduction (Now pure black) */}
       <div className="absolute top-0 left-0 w-full h-28 pointer-events-none z-0"
-        style={{ background: 'linear-gradient(to bottom, #16121E, #0B0B0C)' }} />
+        style={{ background: 'linear-gradient(to bottom, #000000, #000000)' }} />
 
       {/* Ambient orbs */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-girly-pink/5 blur-[120px] pointer-events-none" />
@@ -221,16 +221,16 @@ const Introduction = () => {
       <div className="max-w-7xl mx-auto relative z-10">
 
         {/* ── Top: label + headline + image ── */}
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-12 lg:gap-8 mb-16">
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-10 lg:gap-8 mb-16">
           <div
-            className="flex-1 max-w-2xl w-full"
+            className="flex-1 max-w-2xl w-full flex flex-col items-center text-center lg:items-start lg:text-left"
             style={{
               opacity: inView ? 1 : 0,
               transform: inView ? 'translateY(0)' : 'translateY(-20px)',
               transition: 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1)',
             }}
           >
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-girly-pink mb-4">
+            <span className="inline-flex items-center justify-center lg:justify-start gap-2 text-xs font-semibold uppercase tracking-widest text-girly-pink mb-4">
               <span className="w-5 h-px bg-girly-pink/60 inline-block" />
               Introduction
             </span>

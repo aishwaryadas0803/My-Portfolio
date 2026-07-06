@@ -47,18 +47,18 @@ const Hero = () => {
   return (
     <section 
       id="hero" 
-      className={`relative min-h-screen w-full flex flex-col justify-between items-center pt-32 pb-8 px-6 overflow-hidden bg-[#16121E] transition-opacity duration-1000 ${
+      className={`relative min-h-screen w-full flex flex-col justify-between items-center pt-32 pb-8 px-6 overflow-hidden bg-black transition-opacity duration-1000 ${
         mounted ? 'opacity-100' : 'opacity-0'
       }`}
     >
       {/* Awwwards-style grain overlay covering the entire viewport */}
       <div className="absolute inset-0 bg-grain pointer-events-none z-20" />
 
-      {/* Ambient color gradient backdrops */}
+      {/* Ambient color gradient backdrops (Subdued to preserve matte jet black) */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[70vw] h-[50vh] rounded-full bg-gradient-to-tr from-girly-pink/10 to-girly-lavender/10 blur-[130px]" />
-        <div className="absolute top-[10%] left-[10%] w-[350px] h-[350px] rounded-full bg-girly-pink/5 blur-[120px] animate-pulse-slow" />
-        <div className="absolute bottom-[20%] right-[10%] w-[450px] h-[450px] rounded-full bg-girly-lavender/5 blur-[130px] animate-pulse-slow" />
+        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[70vw] h-[50vh] rounded-full bg-gradient-to-tr from-girly-pink/5 to-girly-lavender/5 blur-[150px]" />
+        <div className="absolute top-[10%] left-[10%] w-[350px] h-[350px] rounded-full bg-girly-pink/5 blur-[150px] animate-pulse-slow" />
+        <div className="absolute bottom-[20%] right-[10%] w-[450px] h-[450px] rounded-full bg-girly-lavender/5 blur-[150px] animate-pulse-slow" />
       </div>
 
       {/* Atmospheric Twinkling Stars & Drifting Petals */}
@@ -114,8 +114,8 @@ const Hero = () => {
         {/* Soft aura glow behind illustration */}
         <div className="absolute w-[85%] h-[85%] rounded-full bg-gradient-to-tr from-girly-pink/20 to-girly-lavender/25 blur-[65px] pointer-events-none" />
 
-        {/* The portrait box (Enlarged) */}
-        <div className="relative w-80 h-[380px] sm:w-[420px] sm:h-[500px] md:w-[480px] md:h-[580px] lg:w-[520px] lg:h-[630px] z-10">
+        {/* The portrait box (Scaled down on mobile to prevent overflow) */}
+        <div className="relative w-64 h-[300px] sm:w-[420px] sm:h-[500px] md:w-[480px] md:h-[580px] lg:w-[520px] lg:h-[630px] z-10">
           <img 
             src="/illustration.png" 
             alt="Aishwarya Das" 
@@ -126,56 +126,56 @@ const Hero = () => {
         {/* FLOATING GLASS CARDS (Positioned around the centered illustration card) */}
 
         {/* Card 1: Problem Solver */}
-        <div className="absolute top-4 -left-8 sm:-left-20 md:-left-32 animate-float-b1">
-          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-lavender/20 shadow-lavender-glow"
+        <div className="absolute top-4 left-0 sm:-left-20 md:-left-32 animate-float-b1">
+          <div className="glass-morphism-premium px-4 sm:px-5 py-2 sm:py-3 rounded-full flex items-center gap-2 sm:gap-2.5 border border-girly-lavender/20 shadow-lavender-glow"
                style={{boxShadow: '0 4px 24px rgba(242,212,146,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
-            <Puzzle size={18} className="text-girly-lavender shrink-0" />
-            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Problem Solver</span>
+            <Puzzle size={16} className="text-girly-lavender shrink-0 sm:w-[18px] sm:h-[18px]" />
+            <span className="text-[10px] sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Problem Solver</span>
           </div>
         </div>
 
         {/* Card 2: Full-Stack Developer */}
-        <div className="absolute top-12 -right-10 sm:-right-22 md:-right-34 animate-float-b2">
-          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-pink/20 shadow-pink-glow"
+        <div className="absolute top-12 right-0 sm:-right-22 md:-right-34 animate-float-b2">
+          <div className="glass-morphism-premium px-4 sm:px-5 py-2 sm:py-3 rounded-full flex items-center gap-2 sm:gap-2.5 border border-girly-pink/20 shadow-pink-glow"
                style={{boxShadow: '0 4px 24px rgba(224,169,109,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
-            <Laptop size={18} className="text-girly-pink shrink-0" />
-            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Full-Stack Developer</span>
+            <Laptop size={16} className="text-girly-pink shrink-0 sm:w-[18px] sm:h-[18px]" />
+            <span className="text-[10px] sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Full-Stack Developer</span>
           </div>
         </div>
 
         {/* Card 3: Creative Thinker */}
-        <div className="absolute top-[33%] -left-12 sm:-left-24 md:-left-36 animate-float-b3">
-          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-pink/20 shadow-pink-glow"
+        <div className="absolute top-[33%] -left-2 sm:-left-24 md:-left-36 animate-float-b3">
+          <div className="glass-morphism-premium px-4 sm:px-5 py-2 sm:py-3 rounded-full flex items-center gap-2 sm:gap-2.5 border border-girly-pink/20 shadow-pink-glow"
                style={{boxShadow: '0 4px 24px rgba(224,169,109,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
-            <Lightbulb size={18} className="text-girly-pink shrink-0" />
-            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Creative Thinker</span>
+            <Lightbulb size={16} className="text-girly-pink shrink-0 sm:w-[18px] sm:h-[18px]" />
+            <span className="text-[10px] sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Creative Thinker</span>
           </div>
         </div>
 
         {/* Card 4: Continuous Learner */}
-        <div className="absolute top-[50%] -right-12 sm:-right-24 md:-right-36 animate-float-b1">
-          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-lavender/20 shadow-lavender-glow"
+        <div className="absolute top-[50%] -right-2 sm:-right-24 md:-right-36 animate-float-b1">
+          <div className="glass-morphism-premium px-4 sm:px-5 py-2 sm:py-3 rounded-full flex items-center gap-2 sm:gap-2.5 border border-girly-lavender/20 shadow-lavender-glow"
                style={{boxShadow: '0 4px 24px rgba(242,212,146,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
-            <GraduationCap size={18} className="text-girly-lavender shrink-0" />
-            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Continuous Learner</span>
+            <GraduationCap size={16} className="text-girly-lavender shrink-0 sm:w-[18px] sm:h-[18px]" />
+            <span className="text-[10px] sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Continuous Learner</span>
           </div>
         </div>
 
         {/* Card 5: Innovator */}
-        <div className="absolute bottom-24 -left-10 sm:-left-22 md:-left-34 animate-float-b2">
-          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-lavender/20 shadow-lavender-glow"
+        <div className="absolute bottom-24 left-0 sm:-left-22 md:-left-34 animate-float-b2">
+          <div className="glass-morphism-premium px-4 sm:px-5 py-2 sm:py-3 rounded-full flex items-center gap-2 sm:gap-2.5 border border-girly-lavender/20 shadow-lavender-glow"
                style={{boxShadow: '0 4px 24px rgba(242,212,146,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
-            <Compass size={18} className="text-girly-lavender shrink-0" />
-            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Innovator</span>
+            <Compass size={16} className="text-girly-lavender shrink-0 sm:w-[18px] sm:h-[18px]" />
+            <span className="text-[10px] sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Innovator</span>
           </div>
         </div>
 
         {/* Card 6: Detail-Oriented */}
-        <div className="absolute bottom-8 -right-8 sm:-right-20 md:-right-32 animate-float-b3">
-          <div className="glass-morphism-premium px-5 py-3 rounded-full flex items-center gap-2.5 border border-girly-pink/20 shadow-pink-glow"
+        <div className="absolute bottom-12 right-0 sm:bottom-8 sm:-right-20 md:-right-32 animate-float-b3">
+          <div className="glass-morphism-premium px-4 sm:px-5 py-2 sm:py-3 rounded-full flex items-center gap-2 sm:gap-2.5 border border-girly-pink/20 shadow-pink-glow"
                style={{boxShadow: '0 4px 24px rgba(224,169,109,0.18), inset 0 1px 0 rgba(255,255,255,0.08)'}}>
-            <Target size={18} className="text-girly-pink shrink-0" />
-            <span className="text-xs sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Detail-Oriented</span>
+            <Target size={16} className="text-girly-pink shrink-0 sm:w-[18px] sm:h-[18px]" />
+            <span className="text-[10px] sm:text-sm font-semibold text-offwhite/95 font-sans tracking-wide whitespace-nowrap">Detail-Oriented</span>
           </div>
         </div>
 

@@ -10,7 +10,11 @@ import Projects from '../sections/Projects';
 import Contact from '../sections/Contact';
 import Footer from '../components/Footer';
 
-export default function Home() {
+export default async function Home() {
+  // Introduce a slight artificial delay to trigger Next.js Suspense
+  // This allows the WeaveSpinner loading screen to show as a premium splash screen
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   return (
     <>
       {/* Dynamic Header */}

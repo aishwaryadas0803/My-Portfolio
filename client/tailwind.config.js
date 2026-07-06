@@ -7,8 +7,8 @@ module.exports = {
     extend: {
       colors: {
         darkBg: {
-          primary: "#0B0B0C",
-          secondary: "#1A1A1C",
+          primary: "#000000",
+          secondary: "#0a0a0a",
         },
         plum: {
           muted: "#1A1A1C",
