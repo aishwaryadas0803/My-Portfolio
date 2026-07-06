@@ -15,7 +15,7 @@ const getProjects = (req, res) => {
         "Built full-stack healthcare platform with real-time WebSocket-based doctor-patient communication.",
         "Implemented JWT-based authentication, role-based access control, and medical records management."
       ],
-      githubLink: "https://github.com/aishwaryadas0803/MediLink",
+      githubLink: "https://github.com/SOUGATA2205/Drug_Discovery-medilink",
       liveLink: "#"
     },
     {
@@ -27,8 +27,8 @@ const getProjects = (req, res) => {
       features: [
         "Developed a responsive music web platform with modern UI/UX and cross-device compatibility."
       ],
-      githubLink: "https://github.com/aishwaryadas0803/A-Musicals",
-      liveLink: "https://amusicals.in"
+      githubLink: "https://github.com/parotdevs/Team_Ayan-Amusicals",
+      liveLink: "https://www.amusicals.in/"
     },
     {
       id: "glow",
@@ -39,8 +39,8 @@ const getProjects = (req, res) => {
       features: [
         "Built a beauty e-commerce website with reusable components and smooth navigation."
       ],
-      githubLink: "https://github.com/aishwaryadas0803/Glow",
-      liveLink: "#"
+      githubLink: "https://github.com/parotdevs/Glow",
+      liveLink: "https://glow.parot.dev/"
     },
     {
       id: "aahar-setu",
@@ -51,8 +51,8 @@ const getProjects = (req, res) => {
       features: [
         "Engineered QR-based livestock medicine tracking system with automated alerts for food safety compliance."
       ],
-      githubLink: "https://github.com/aishwaryadas0803/Aahar-Setu",
-      liveLink: "#"
+      githubLink: "https://github.com/Aritra-221B/AhaarSetu",
+      liveLink: "https://ahaarsetu-theta.vercel.app/"
     },
     {
       id: "sandrover",

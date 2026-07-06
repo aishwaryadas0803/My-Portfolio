@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { MapPin, Coffee, Zap, Code2, Puzzle, Rocket, ExternalLink } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 /* ─── Intersection-observer hook ─── */
 function useInView(threshold = 0.15) {
@@ -91,6 +92,72 @@ function DoCard({ icon: Icon, title, desc, color, border, delay, inView }) {
   );
 }
 
+/* ─── Profile Image with 3D Tilt ─── */
+function ProfileImage({ inView }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 100, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 100, damping: 30 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [5, -5]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-5, 5]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <div
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(40px)',
+        transition: 'opacity 0.8s ease 0.4s, transform 0.8s cubic-bezier(0.22,1,0.36,1) 0.4s',
+        perspective: 1000
+      }}
+      className="relative w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[400px] mx-auto lg:mx-0 shrink-0 mt-12 lg:mt-0"
+    >
+      <div className="absolute inset-0 bg-yellow-500/15 rounded-full blur-[70px] -z-10 group-hover:bg-yellow-500/25 transition-colors duration-500" />
+      
+      <motion.div
+        animate={{ y: [0, -6, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="w-full"
+      >
+        <motion.div
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          whileHover={{ scale: 1.02 }}
+          className="relative group w-full aspect-[4/5] rounded-[32px] p-2 bg-gradient-to-br from-white/5 to-white/0 border border-yellow-500/30 glass-morphism shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-colors duration-500 hover:border-yellow-400/50"
+        >
+          <div className="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[32px] pointer-events-none" />
+          <div className="w-full h-full rounded-[24px] overflow-hidden relative bg-black/50">
+            <img 
+              src="/profile.jpg" 
+              alt="Aishwarya" 
+              className="w-full h-full object-cover group-hover:brightness-110 transition-all duration-500"
+            />
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+}
+
 /* ─── Main component ─── */
 const Introduction = () => {
   const [sectionRef, inView] = useInView(0.1);
@@ -153,53 +220,57 @@ const Introduction = () => {
 
       <div className="max-w-7xl mx-auto relative z-10">
 
-        {/* ── Top: label + headline ── */}
-        <div
-          className="mb-16 max-w-3xl"
-          style={{
-            opacity: inView ? 1 : 0,
-            transform: inView ? 'translateY(0)' : 'translateY(-20px)',
-            transition: 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1)',
-          }}
-        >
-          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-girly-pink mb-4">
-            <span className="w-5 h-px bg-girly-pink/60 inline-block" />
-            Introduction
-          </span>
-
-          {/* Static + typed headline */}
-          <h2 className="text-4xl md:text-6xl font-black text-offwhite leading-tight tracking-tight">
-            Hi, I'm{' '}
-            <span
-              className="bg-clip-text"
-              style={{
-                backgroundImage: 'linear-gradient(135deg, #E0A96D, #F2D492)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Aishwarya.
-            </span>
-            <br />
-            <span className="text-offwhite/80 text-2xl md:text-4xl font-semibold mt-2 block min-h-[1.4em]">
-              I'm a{' '}
-              <span className="text-girly-lavender typing-cursor">{typedRole}</span>
-            </span>
-          </h2>
-
-          <p
-            className="mt-6 text-offwhite/55 text-sm md:text-base font-light leading-loose max-w-2xl"
+        {/* ── Top: label + headline + image ── */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-12 lg:gap-8 mb-16">
+          <div
+            className="flex-1 max-w-2xl w-full"
             style={{
               opacity: inView ? 1 : 0,
-              transition: 'opacity 0.8s ease 0.3s',
+              transform: inView ? 'translateY(0)' : 'translateY(-20px)',
+              transition: 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1)',
             }}
           >
-            I'm a Computer Science student and developer passionate about building things that live on the internet.
-            I care deeply about the intersection of{' '}
-            <strong className="text-girly-pink font-semibold">elegant design</strong> and{' '}
-            <strong className="text-girly-lavender font-semibold">clean engineering</strong> — creating experiences that are
-            not just functional, but genuinely memorable.
-          </p>
+            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-girly-pink mb-4">
+              <span className="w-5 h-px bg-girly-pink/60 inline-block" />
+              Introduction
+            </span>
+
+            {/* Static + typed headline */}
+            <h2 className="text-4xl md:text-6xl font-black text-offwhite leading-tight tracking-tight">
+              Hi, I'm{' '}
+              <span
+                className="bg-clip-text"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, #E0A96D, #F2D492)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                Aishwarya.
+              </span>
+              <br />
+              <span className="text-offwhite/80 text-2xl md:text-4xl font-semibold mt-2 block min-h-[1.4em]">
+                I'm a{' '}
+                <span className="text-girly-lavender typing-cursor">{typedRole}</span>
+              </span>
+            </h2>
+
+            <p
+              className="mt-6 text-offwhite/55 text-sm md:text-base font-light leading-loose max-w-2xl"
+              style={{
+                opacity: inView ? 1 : 0,
+                transition: 'opacity 0.8s ease 0.3s',
+              }}
+            >
+              I'm a Computer Science student and developer passionate about building things that live on the internet.
+              I care deeply about the intersection of{' '}
+              <strong className="text-girly-pink font-semibold">elegant design</strong> and{' '}
+              <strong className="text-girly-lavender font-semibold">clean engineering</strong> — creating experiences that are
+              not just functional, but genuinely memorable.
+            </p>
+          </div>
+
+          <ProfileImage inView={inView} />
         </div>
 
         {/* ── Mid: Stats row ── */}

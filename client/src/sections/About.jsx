@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { GraduationCap, Brain, BookOpen, Code2, Layers, Database, Wrench } from 'lucide-react';
+import { GalaxySkills } from '../components/ui/GalaxySkills';
 
 // Hook: fires once when element enters the viewport
 function useInView(threshold = 0.2) {
@@ -68,9 +69,11 @@ function TimelineCard({ delay, inView, dotColor, year, title, school, badge, bad
         <span className="text-[10px] font-semibold text-girly-pink bg-girly-pink/10 px-2 py-0.5 rounded-full">{year}</span>
         <h5 className="text-sm font-bold text-offwhite mt-1.5">{title}</h5>
         <p className="text-xs text-offwhite/60">{school}</p>
-        <div className={`mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${badgeStyles[badgeColor]}`}>
-          {badge}
-        </div>
+        {badge && (
+          <div className={`mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${badgeStyles[badgeColor]}`}>
+            {badge}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -145,6 +148,8 @@ function TimelineSection() {
     </div>
   );
 }
+
+
 
 const About = () => {
   const skillCategories = [
@@ -277,37 +282,8 @@ const About = () => {
             </p>
           </div>
 
-          {/* Skills Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            {skillCategories.map((category, idx) => {
-              const Icon = category.icon;
-              return (
-                <div
-                  key={idx}
-                  className={`p-6 rounded-2xl bg-plum-muted/20 border border-girly-lavender/8 glass-morphism ${category.border} transition-all duration-300 group`}
-                >
-                  {/* Card header */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={`p-2 rounded-lg bg-darkBg-primary/50 border border-girly-lavender/10`}>
-                      <Icon className={category.color} size={18} />
-                    </div>
-                    <h4 className="text-sm font-bold text-offwhite tracking-wide">{category.title}</h4>
-                  </div>
-                  {/* Skill tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {category.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1 rounded-full bg-darkBg-primary/60 border border-girly-pink/8 hover:border-girly-pink/30 text-offwhite/80 text-[11px] font-medium transition-all cursor-default hover:text-offwhite hover:bg-darkBg-primary/90"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          {/* 3D Galaxy Visualization */}
+          <GalaxySkills />
 
           {/* Summary Stats Row */}
           <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-5">

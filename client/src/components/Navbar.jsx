@@ -1,19 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Home, User, Briefcase, Code2, GraduationCap, Award, Mail, Menu, X } from 'lucide-react';
+import { Home, User, Briefcase, Code2, GraduationCap, Award, Mail, Menu, X, Trophy } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
 
   const navItems = [
-    { id: 'hero',         name: 'Home',     icon: Home },
-    { id: 'introduction', name: 'Intro',    icon: User },
-    { id: 'about',        name: 'About',    icon: GraduationCap },
+    { id: 'hero', name: 'Home', icon: Home },
+    { id: 'about', name: 'About', icon: User },
     { id: 'certifications', name: 'Certs', icon: Award },
-    { id: 'projects',     name: 'Projects', icon: Briefcase },
-    { id: 'contact',      name: 'Contact',  icon: Mail },
+    { id: 'hackathons', name: 'Hackathons', icon: Trophy },
+    { id: 'works', name: 'Works', icon: Award },
+    { id: 'projects', name: 'Projects', icon: Briefcase },
+    { id: 'contact', name: 'Contact', icon: Mail },
   ];
 
   // Track scroll position to update active nav state
