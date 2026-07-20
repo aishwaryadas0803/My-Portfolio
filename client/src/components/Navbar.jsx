@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Home, User, Briefcase, Code2, GraduationCap, Award, Mail, Menu, X, Trophy } from 'lucide-react';
+import { Home, User, Briefcase, Code2, GraduationCap, Award, Mail, Menu, X, Trophy, Brain } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,10 +10,10 @@ const Navbar = () => {
   const navItems = [
     { id: 'hero', name: 'Home', icon: Home },
     { id: 'about', name: 'About', icon: User },
-    { id: 'certifications', name: 'Certs', icon: Award },
-    { id: 'hackathons', name: 'Hackathons', icon: Trophy },
-    { id: 'works', name: 'Works', icon: Award },
+    { id: 'skills', name: 'Skills', icon: Brain },
     { id: 'projects', name: 'Projects', icon: Briefcase },
+    { id: 'hackathons', name: 'Hackathons', icon: Trophy },
+    { id: 'certifications', name: 'Certs', icon: Award },
     { id: 'contact', name: 'Contact', icon: Mail },
   ];
 

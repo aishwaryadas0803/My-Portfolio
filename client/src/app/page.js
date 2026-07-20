@@ -2,10 +2,10 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../sections/Hero';
 import About from '../sections/About';
+import Skills from '../sections/Skills';
 import Introduction from '../sections/Introduction';
 import Certifications from '../sections/Certifications';
 import Hackathons from '../sections/Hackathons';
-import Works from '../sections/Works';
 import Projects from '../sections/Projects';
 import Contact from '../sections/Contact';
 import Footer from '../components/Footer';
@@ -28,16 +28,20 @@ export default async function Home() {
         {/* Introduction */}
         <Introduction />
 
-        {/* Academic Profile & Skills */}
+        {/* Academic Profile */}
         <About />
 
-        {/* Certifications & Training */}
-        <Certifications />
-        <Hackathons />
-        <Works />
+        {/* Technical Skills */}
+        <Skills />
 
         {/* Dynamic Project Portfolios */}
         <Projects />
+
+        {/* Hackathons */}
+        <Hackathons />
+
+        {/* Certifications & Training */}
+        <Certifications />
 
         {/* Contact Form */}
         <Contact />
