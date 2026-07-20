@@ -7,9 +7,12 @@ export const metadata = {
   keywords: "Aishwarya Das, Portfolio, JIS College of Engineering, Computer Science, CSE, Full-Stack Developer, React, Next.js, Node.js, Express",
   authors: [{ name: "Aishwarya Das" }],
   icons: {
-    icon: '/icon.png',
-    shortcut: '/icon.png',
-    apple: '/icon.png',
+    icon: [
+      { url: '/favicon.ico?v=2' },
+      { url: '/icon.png?v=2', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico?v=2',
+    apple: '/apple-touch-icon.png?v=2',
   },
   openGraph: {
     title: "Aishwarya Das | Portfolio",
