@@ -20,18 +20,18 @@ const certifications = [
     image: "/certificates/java.jpg"
   },
   {
-    name: "Principles of Management",
-    provider: "NPTEL, IIT Roorkee",
+    name: "Cloud Computing",
+    provider: "NPTEL, IIT Kharagpur",
     year: "2025",
-    highlight: null,
-    icon: BadgeCheck,
-    accentColor: "from-pink-500/15 to-purple-500/10",
-    borderColor: "border-pink-500/20",
-    hoverBorderColor: "group-hover/card:border-pink-500/50",
-    iconColor: "text-pink-400",
-    badgeColor: "bg-pink-500/10 text-pink-400 border-pink-500/20",
+    highlight: "Elite Silver Medal",
+    icon: Medal,
+    accentColor: "from-slate-300/20 to-cyan-500/10",
+    borderColor: "border-slate-300/30",
+    hoverBorderColor: "group-hover/card:border-slate-300/80",
+    iconColor: "text-slate-300",
+    badgeColor: "bg-slate-300/10 text-slate-300 border-slate-300/20",
     isGold: false,
-    image: "/certificates/management.jpg"
+    image: "/certificates/cloud.jpg"
   },
   {
     name: "Full Stack Development Using MERN",
