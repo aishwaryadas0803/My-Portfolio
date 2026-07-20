@@ -64,7 +64,7 @@ const Contact = () => {
     } catch (err) {
       console.warn('Direct FormSubmit failed, attempting backend endpoint:', err.message);
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
         const response = await fetch(`${apiUrl}/api/contact`, {
           method: 'POST',
           headers: {
