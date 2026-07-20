@@ -147,7 +147,7 @@ function ProfileImage({ inView }) {
           <div className="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[32px] pointer-events-none" />
           <div className="w-full h-full rounded-[24px] overflow-hidden relative bg-black/50">
             <img 
-              src="/profile.jpg" 
+              src="/profile.jpg?v=5" 
               alt="Aishwarya" 
               className="w-full h-full object-cover group-hover:brightness-110 transition-all duration-500"
             />

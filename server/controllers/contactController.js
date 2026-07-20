@@ -23,16 +23,36 @@ const submitContactForm = (req, res) => {
     });
   }
 
-  // Securely log the message (or write to a database/file)
+  // Securely log the message
   console.log(`[CONTACT_SUBMISSION] Time: ${new Date().toISOString()}`);
   console.log(`- From Name: ${name}`);
   console.log(`- Contact Email: ${email}`);
-  console.log(`- Message Snippet: "${message.substring(0, 100)}${message.length > 100 ? "..." : ""}"`);
+  console.log(`- Message: "${message}"`);
 
-  // Send success response
+  // Forward submission to FormSubmit for direct email delivery to aishwaryadas0803@gmail.com
+  fetch('https://formsubmit.co/ajax/aishwaryadas0803@gmail.com', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      message,
+      _subject: `Portfolio Contact: Message from ${name}`,
+      _template: 'table'
+    })
+  }).then(() => {
+    console.log(`[CONTACT_SUBMISSION] Successfully forwarded message to aishwaryadas0803@gmail.com`);
+  }).catch((err) => {
+    console.error(`[CONTACT_SUBMISSION] FormSubmit forwarding error: ${err.message}`);
+  });
+
+  // Send success response to client
   res.status(200).json({
     success: true,
-    message: "Thank you for reaching out, Aishwarya will get back to you soon!"
+    message: "Thank you for reaching out, your message has been sent to aishwaryadas0803@gmail.com!"
   });
 };
 

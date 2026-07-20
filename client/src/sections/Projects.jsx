@@ -6,19 +6,6 @@ import ProjectCard from '../components/ProjectCard';
 // Offline fallback projects matching the real CV
 const fallbackProjects = [
   {
-    id: "medilink",
-    title: "MediLink",
-    category: "Full-Stack Web App",
-    description: "A comprehensive healthcare management system designed to streamline patient-doctor interaction. Features real-time consultation messaging and secure record storage.",
-    technologies: ["React.js", "Node.js", "Express.js", "MongoDB", "Socket.io", "JWT"],
-    features: [
-      "Built full-stack healthcare platform with real-time WebSocket-based doctor-patient communication.",
-      "Implemented JWT-based authentication, role-based access control, and medical records management."
-    ],
-    githubLink: "https://github.com/SOUGATA2205/Drug_Discovery-medilink",
-    liveLink: "#"
-  },
-  {
     id: "a-musicals",
     title: "A-Musicals",
     category: "Frontend Web App",

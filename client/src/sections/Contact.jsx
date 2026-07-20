@@ -37,30 +37,58 @@ const Contact = () => {
     setStatus({ submitting: true, success: false, error: null });
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${apiUrl}/api/contact`, {
+      // Send real email to aishwaryadas0803@gmail.com via FormSubmit API
+      const response = await fetch('https://formsubmit.co/ajax/aishwaryadas0803@gmail.com', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: `Portfolio Contact: Message from ${formData.name}`,
+          _template: 'table'
+        })
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong while sending message.');
-      }
-
-      setStatus({ submitting: false, success: true, error: null });
-      setFormData({ name: '', email: '', message: '' }); // reset form
-    } catch (err) {
-      console.warn('Backend API connection failed, simulating contact form submission:', err.message);
-      // For demo fallback - mock successful submission if server is offline
-      setTimeout(() => {
+      if (response.ok && (data.success === 'true' || data.success === true)) {
         setStatus({ submitting: false, success: true, error: null });
         setFormData({ name: '', email: '', message: '' });
-      }, 1000);
+      } else {
+        throw new Error(data.message || 'Email delivery failed.');
+      }
+    } catch (err) {
+      console.warn('Direct FormSubmit failed, attempting backend endpoint:', err.message);
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiUrl}/api/contact`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Something went wrong while sending message.');
+        }
+
+        setStatus({ submitting: false, success: true, error: null });
+        setFormData({ name: '', email: '', message: '' });
+      } catch (backendErr) {
+        // Final fallback: show error and prompt mailto
+        setStatus({ 
+          submitting: false, 
+          success: false, 
+          error: "Message delivery failed. Please click 'aishwaryadas0803@gmail.com' on the left to send an email directly." 
+        });
+      }
     }
   };
 

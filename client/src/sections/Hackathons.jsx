@@ -25,7 +25,7 @@ const hackathons = [
     delay: '1s',
   },
   {
-    name: 'AgentifAL Buildathon',
+    name: 'AgentifAI Buildathon',
     year: '2026',
     description: 'Capgemini-sponsored buildathon focusing on intelligent agents and automation frameworks.',
     icon: Sparkles,

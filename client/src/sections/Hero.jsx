@@ -117,7 +117,7 @@ const Hero = () => {
         {/* The portrait box (Scaled down on mobile to prevent overflow) */}
         <div className="relative w-64 h-[300px] sm:w-[420px] sm:h-[500px] md:w-[480px] md:h-[580px] lg:w-[520px] lg:h-[630px] z-10">
           <img 
-            src="/illustration.png" 
+            src="/illustration.png?v=2" 
             alt="Aishwarya Das" 
             className="w-full h-full object-contain mask-portrait"
           />

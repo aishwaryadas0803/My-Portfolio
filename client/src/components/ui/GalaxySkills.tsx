@@ -165,7 +165,7 @@ export const GalaxySkills: React.FC = () => {
           <div className="w-full h-full rounded-full bg-[#09090B] flex flex-col items-center justify-center overflow-hidden border border-white/5 relative group">
             {/* Cutout Image of the user */}
             <img 
-              src="/illustration.png" 
+              src="/illustration.png?v=2" 
               alt="Developer Avatar" 
               className="w-full h-full object-cover filter brightness-95 group-hover:scale-105 transition-transform duration-500"
               onError={(e) => {
