@@ -30,7 +30,11 @@ app.get("/", (req, res) => {
   });
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server is running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`);
-});
+// Start Server if run directly
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server is running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`);
+  });
+}
+
+module.exports = app;
