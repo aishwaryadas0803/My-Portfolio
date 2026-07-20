@@ -89,10 +89,20 @@ const Navbar = () => {
           <span className="text-xs font-semibold uppercase tracking-widest text-offwhite/75 mr-8">Aishwarya Das</span>
           <button 
             onClick={() => setIsOpen(!isOpen)}
-            className="text-offwhite/80 hover:text-girly-pink transition-colors focus:outline-none cursor-pointer py-1"
+            className="p-2 rounded-full bg-white/5 border border-girly-pink/20 hover:border-girly-pink/60 hover:shadow-pink-glow/30 text-offwhite transition-all duration-300 focus:outline-none cursor-pointer group flex items-center justify-center"
             aria-label="Toggle menu"
           >
-            {isOpen ? <X size={18} /> : <Menu size={18} />}
+            <div className="w-4 h-3.5 flex flex-col justify-between items-center relative">
+              <span className={`w-full h-0.5 bg-gradient-to-r from-girly-pink to-girly-lavender rounded-full transform transition-all duration-300 ease-in-out origin-center ${
+                isOpen ? 'rotate-45 translate-y-[6px]' : ''
+              }`} />
+              <span className={`w-full h-0.5 bg-offwhite/90 rounded-full transition-all duration-200 ease-in-out ${
+                isOpen ? 'opacity-0 scale-x-0' : 'opacity-100'
+              }`} />
+              <span className={`w-full h-0.5 bg-gradient-to-r from-girly-lavender to-girly-pink rounded-full transform transition-all duration-300 ease-in-out origin-center ${
+                isOpen ? '-rotate-45 -translate-y-[6px]' : ''
+              }`} />
+            </div>
           </button>
         </div>
 
